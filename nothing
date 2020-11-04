@@ -1,0 +1,121 @@
+`$('#regForm').submit(function(e){
+    e.preventDefault();
+    
+    $('#regFdbk').removeClass('alert-danger alert-success');
+
+    var fName = $('input[name="regFname"]').val();
+    var oName = $('input[name="regOname"]').val();
+    var lName = $('input[name="regLname"]').val();
+    var regDob = $('input[name="regDob"]').val();
+    var gender = $('input[name="gender"]:checked').val();
+    var roleId = $('input[name="role"]').val();
+    var uName = $('input[name="regUname"]').val();
+    var regPass = $('input[name="regPass"]').val();
+    var regCpass = $('input[name="regCpass"]').val();
+
+    if(fName != "" && lName != "" && regDob != "" && gender != "" && roleId != "" && uName != "" && regPass != "" && regPass == regCpass){
+        //run AJAX call to login.php
+        $.ajax({
+            type: "POST",
+            url: "../gateway/register.php",
+            data: 'fName='+fName+'&oName='+oName+'&lName='+lName+'&regDob='+regDob+'&gender='+gender+'&regUname='+uName+'&regPass='+regPass+'&regCpass='+regCpass+'&roleId='+roleId+'&submitReg=true',
+            success: function(data) {
+                if(data == 1){
+                    //inform of success
+                    if(roleId == 1){
+                        M.toast({html: 'You ve successfully created an account. Please click <a href="../../index.php"> here </a> to login', displayLength: 15000});
+                    } else if(roleId == 2){
+                        $('#regForm').trigger('reset');
+                        M.toast({html: 'Successfully registered a student!'});
+                    }
+                }
+            }, error: function(){
+                //network error
+                M.toast({html: 'Network Error. Try again later!'});
+            }, timeout: 3500
+        });
+    } else {
+        M.toast({html: 'All fields are to be filled except "Othername".'});
+    } 
+});
+
+
+
+
+
+
+
+
+
+
+ `<?php
+    //SECURITY: Confirm Source
+    if( isset($_POST['submitReg']) ){//legal access
+        $error = 0;//var for error mgt
+
+        if(  isset($_POST['fName'])  && $_POST['fName'] != "" ){
+            $fName = $_POST['fName'];
+        } else {
+            $error = 1;
+        }
+
+        $oName = $_POST['oName'];
+
+        if(  isset($_POST['lName'])  && $_POST['lName'] != "" ){
+            $lName = $_POST['lName'];
+        } else {
+            $error = 1;
+        }
+
+        if(  isset($_POST['regDob']) && $_POST['regDob'] != ""){
+            $regDob = $_POST['regDob'];
+        } else {
+            $error = 1;
+        }
+
+        if(  isset($_POST['gender'])  && $_POST['gender'] != "" ){
+            $gender = $_POST['gender'];
+        } else {
+            $error = 1;
+        }
+
+        if(  isset($_POST['regUname']) && $_POST['regUname'] != ""){
+            $uName = $_POST['regUname'];
+        } else {
+            $error = 1;
+        }
+
+        if(  isset($_POST['regPass'])  && $_POST['regPass'] != "" ){
+            $regPass = $_POST['regPass'];
+        } else {
+            $error = 1;
+        }
+
+        if(  isset($_POST['roleId'])  && $_POST['roleId'] != "" ){
+            $roleId = $_POST['roleId'];
+        } else {
+            $error = 1;
+        }
+        //echo $fName, $lName, $oName, $gender, $regDob, $roleId, $regPass, $uName;
+        if( $error == 1){
+            echo 'Empty Username/Password';
+        } else {
+            //require a connection to DB
+            require '../../../jsClassAppDBConfig.php';
+        
+            //Insert user data into DB
+            $res = $db->query('INSERT INTO users (firstname, lastname, othername, dob, dateReg, username, pass, gender, roleId) VALUES ("'.$fName.'","'.$lName.'","'.$oName.'","'.$regDob.'",NOW(),"'. $uName.'","'.$regPass.'","'.$gender.'", '.$roleId.')');
+             
+            if($res){
+                echo 1;
+            } else {
+                echo 2;
+            }
+            
+            
+        }
+    } else {//illegal access
+        //redirect to home page (index.php)
+        $url = '../../index.php';
+        header('location:'.$url);
+    }
