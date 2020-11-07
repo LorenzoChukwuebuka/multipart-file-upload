@@ -6,8 +6,16 @@
     <title> X-Plorer</title>
     <link rel="stylesheet" href="css/materialize.css">
     <link rel="stylesheet" href="fonts/material-icons.css">
+    <style>
+        nav {
+            background-color: #00365f;
+        }
+        .nav-wrapper {
+            padding-left: 2vw;
+        }
+        </style>
     
-    </style>
+  
 </head>
 <body>
 
