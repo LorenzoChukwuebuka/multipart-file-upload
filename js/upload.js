@@ -29,10 +29,16 @@
             success: function (res){              
              
                 if(res == 200){
-                 M.toast({html:'File uploaded Successfully'});
+             M.toast({html:'File uploaded Successfully'});
+             setInterval(function(){ 
+             location.reload();
+            }, 1000);
+             
+
              }else if(res == 501){
                  M.toast({html:'There has been problem uploading this file.'})
-             }
+             } 
+               
                
             },error:function(){
                 M.toast({html:'Server error'});

@@ -48,13 +48,13 @@ session_start();
 
                         //validate file type
                         if($fileExt == '.jpg' || $fileExt == '.png'){
-                            $fileType = 'image';
+                            $fileType = 'I';
                             $targetDir = $imgDir;
                         } elseif($fileExt == '.mp3'){
-                            $fileType = 'audio';
+                            $fileType = 'A';
                             $targetDir = $audioDir;
                         } elseif($fileExt == '.mp4'){
-                            $fileType = 'video';
+                            $fileType = 'V';
                             $targetDir = $videoDir;
                         } else {
                             $uploadOk = 1;
@@ -80,7 +80,7 @@ session_start();
 
                                 require_once("../dbconnect.php");
 
-                                $res = 'INSERT INTO `file`( `file_name`, `type`, `userId`) VALUES ("'.$fileName.'","'.$mode.'","'.$userId.'")';
+                                $res = 'INSERT INTO `file`(   `file_name`, `type`, `userId`, `MediaType`) VALUES ("'.$fileName.'","'.$mode.'","'.$userId.'","'.$fileType.'")';
 
                                 $res1 = $con->query($res);
 
