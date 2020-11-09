@@ -27,12 +27,11 @@
             processData: false,
             contentType: false,
             success: function (res){              
-             if(res == 2){
-                 M.toast({html:'Please make sure that your file is either jpg,png,mp3 and mp4'});
-             }else if(res == 3){
-                 M.toast({html:'File already exists'});
-             } else if(res == 200){
+             
+                if(res == 200){
                  M.toast({html:'File uploaded Successfully'});
+             }else if(res == 501){
+                 M.toast({html:'There has been problem uploading this file.'})
              }
                
             },error:function(){
