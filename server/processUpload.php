@@ -8,38 +8,43 @@ session_start();
     echo $userId; */ 
 
  
-    if(isset($_POST['fileUpload'])){ 
+    if(isset($_POST['fileUpload']))
+    { 
 
         $error = 0;
 
-        if(isset($_POST['mode'])){
+        if(isset($_POST['mode']))
+        {
             $mode = $_POST['mode'];
         }else{
             $error = 1;
         }
           
           
-        if(isset($_POST['userId'])){
+        if(isset($_POST['userId']))
+        {
             $userId = $_POST['userId'];
         }else{
             $error = 1;
         }
     
-        if(isset($_FILES['fileToUpload']['name'])){
+        if(isset($_FILES['fileToUpload']['name']))
+        {
     
             $fileName = $_FILES["fileToUpload"]["name"];
 
             //PROCESS FILE
-                        //target Folder
-                        $imgDir = "../assets/img";
-                        $audioDir = "../assets/audio";
-                        $videoDir = "../assets/video";
-                        $fileType = '';
-                        $uploadOk = 0;
-                        $errorMsg = '';
+               //target Folder
+               $imgDir = "../assets/img";
+               $audioDir = "../assets/audio";
+               $videoDir = "../assets/video";
+               $fileType = '';
+               $uploadOk = 0;
+               $errorMsg = 0;
+               
+              $fileExt = strrchr($fileName,".");//get file extension
 
-                        $fileName = $_FILES["fileToUpload"]["name"];
-                        $fileExt = strrchr($fileName,".");//get file extension
+              
 
                         //validate file type
                         if($fileExt == '.jpg' || $fileExt == '.png'){
@@ -53,18 +58,24 @@ session_start();
                             $targetDir = $videoDir;
                         } else {
                             $uploadOk = 1;
-                            $errorMsg .= '<li>Please ensure the file is one of the folowing file types: [mp3, mp4, jpg, png]</li>';
+                            $errorMsg =  2;
                         } 
 
+                        
                           // Check if file already exists
                           $target_file = $targetDir.'/'.basename($fileName);
-                          if (file_exists($target_file)) {
+                          if (file_exists($target_file))
+                           {
                               $uploadOk = 1;
-                              $errorMsg .= "<li>Sorry, file already exists.</li>";                    
+                              $errorMsg =  3;                    
                           } 
 
-                          if($uploadOk == 0){
-                            if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)){
+                          
+                        if($uploadOk == 0)
+                        {
+                            if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file))
+                            {
+                                    
                                 // require db connection
 
                                 require_once("../dbconnect.php");
@@ -73,18 +84,20 @@ session_start();
 
                                 $res1 = $con->query($res);
 
-                                  if($res1){
-                                     
+                                if($res1)
+                                {
                                     echo 200;
+                                }else{
+                                    echo 501;
+                                }
+                            }
+                        }   
 
-                                  } else {
-                                echo 501;
-                            } 
-                        } 
+          
+         } 
 
-                      
-     
-    }
-      
-       
-?>
+}
+
+  
+
+
