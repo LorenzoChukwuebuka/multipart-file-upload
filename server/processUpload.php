@@ -8,6 +8,7 @@ session_start();
     echo $userId; */ 
 
  
+    if(isset($_POST['fileUpload'])){ 
 
         $error = 0;
 
@@ -21,18 +22,18 @@ session_start();
         if(isset($_POST['userId'])){
             $userId = $_POST['userId'];
         }else{
-            $error = 2;
+            $error = 1;
         }
     
         if(isset($_FILES['fileToUpload']['name'])){
     
-         $fileName = $_FILES["fileToUpload"]["name"];
+            $fileName = $_FILES["fileToUpload"]["name"];
 
-          //PROCESS FILE
+            //PROCESS FILE
                         //target Folder
-                        $imgDir = "assets/img";
-                        $audioDir = "assets/audio";
-                        $videoDir = "assets/video";
+                        $imgDir = "../assets/img";
+                        $audioDir = "../assets/audio";
+                        $videoDir = "../assets/video";
                         $fileType = '';
                         $uploadOk = 0;
                         $errorMsg = '';
@@ -63,30 +64,27 @@ session_start();
                           } 
 
                           if($uploadOk == 0){
-                            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-                                echo 'Ok';
-                            }else {
-                                echo 'error';
+                            if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)){
+                                // require db connection
+
+                                require_once("../dbconnect.php");
+
+                                $res = 'INSERT INTO `file`( `file_name`, `type`, `userId`) VALUES ("'.$fileName.'","'.$mode.'","'.$userId.'")';
+
+                                $res1 = $con->query($res);
+
+                                  if($res1){
+                                     
+                                    echo 200;
+
+                                  } else {
+                                echo 501;
                             } 
-                        }
-    
-        } 
- 
-    
+                        } 
 
- 
-
- 
-
-   
-   
-
- 
-
-  
-
-
-
-
-
+                      
+     
+    }
+      
+       
 ?>

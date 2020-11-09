@@ -17,6 +17,7 @@
         fData.append('mode',mode);
         fData.append('fileToUpload',fileToUpload);
         fData.append('userId',userId);    
+        fData.append('fileUpload', true);
 
         //MAKE AJAX CALL TO SUBMIT FORMWITH FILE
         $.ajax({
@@ -25,8 +26,8 @@
             data: fData,
             processData: false,
             contentType: false,
-            success: function (res){ 
-           console.log(res);
+            success: function (res){              
+                console.log(res);
                
             }
         });

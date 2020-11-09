@@ -16,13 +16,9 @@ $('#loginform').submit(function(e){
         data:{UserName: uName, password: Pass, submitlogin:true},
         success: function(data){
           if(data == 200){ 
-            M.toast({html:'successfully logged in', classes:'success'});
-
-            setInterval(function(){ 
-
+            
                 window.location.href="../UI/userspage.php";
-             }, 1000);
-           
+                      
           
           }
           else{
