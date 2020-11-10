@@ -61,7 +61,9 @@ $res = $con->query("SELECT * FROM  file ");
 $num = $res->num_rows;
 
 if($num > 0){
-  	$imageArr = [];
+	  $imageArr = [];
+	  $audioArr = [];
+	  $VideoArr = [];
     while($row = $res->fetch_assoc())
     { 
 		$type = $row['MediaType'];
@@ -70,7 +72,7 @@ if($num > 0){
     	//block of code for viewing the files
 
 
-		if($mode == 0 && $type == 'I')
+		if($mode == 1 && $type == 'I')
 		{
 			
 		 
@@ -78,20 +80,18 @@ if($num > 0){
 			
 		} else if($mode == 1 && $type == 'A') {
       		  
-            
+			array_push($audioArr, $row);
         
     	} else if($mode == 1 && $type == 'V') {
          
-			 
+			array_push($VideoArr, $row);
 		}
 	}
 } else {
   	echo'No file was found';
 }
 
-
-
-    ?>
+ ?>
  	<div class="row">
 		<div class="col s12">
 			<ul class="tabs">
