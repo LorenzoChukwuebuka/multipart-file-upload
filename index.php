@@ -1,14 +1,3 @@
-<?php 
-
-//require db connection
-
-require_once('dbconnection.php');
-
-//fetch files from db
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +12,21 @@ require_once('dbconnection.php');
         }
         .nav-wrapper {
             padding-left: 2vw;
+            
         }
+
+        img{
+   	float: left;
+   	margin: 5px;
+   	 
+   }
+
+   .gallery {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 5vw);
+    grid-gap: 15px;
+}
         </style>
     
   
@@ -41,34 +44,93 @@ require_once('dbconnection.php');
         
 
 
-    <div class="container"> 
-    <div class="row">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s3"><a href="#test1">Images</a></li>
-        <li class="tab col s3"><a class="active" href="#test2">Audio</a></li>
-        <li class="tab col s3"><a href="#test4">Video </a></li>
-      </ul>
-    </div>
+    
+    
 
 
-    <div id="test1" class="col s12">Test 1</div>
+    <?php 
+
+//require db connection
+
+require_once('dbconnect.php');
+
+//fetch files from db 
+
+
+$res = $con->query("SELECT * FROM  file ");
+$num = $res->num_rows;
+
+if($num > 0){
+  	$imageArr = [];
+    while($row = $res->fetch_assoc())
+    { 
+		$type = $row['MediaType'];
+		$mode = $row['type'];
+
+    	//block of code for viewing the files
+
+
+		if($mode == 0 && $type == 'I')
+		{
+			
+		 
+			array_push($imageArr, $row);
+			
+		} else if($mode == 1 && $type == 'A') {
+      		  
+            
+        
+    	} else if($mode == 1 && $type == 'V') {
+         
+			 
+		}
+	}
+} else {
+  	echo'No file was found';
+}
 
 
 
-    <div id="test2" class="col s12">Test 2</div>
-    <div id="test4" class="col s12">Test 4</div>
-  </div>
+    ?>
+ 	<div class="row">
+		<div class="col s12">
+			<ul class="tabs">
+				<li class="tab col s3"><a class="active" href="#image">Images</a></li>
+				<li class="tab col s3"><a href="#video">Audio</a></li>
+				<li class="tab col s3"><a href="#audio">Video </a></li>
+			</ul>
+		</div>
+		<div id="image" class="col s12">
+			<?php
+				foreach($imageArr as $img){
+					echo '<div class="col s3"><img src="assets/img/'.$img['file_name'].'" class="responsive-img"/></div>';
+				}
+			?>
+		</div>
+		<div id="video" class="col s12">Video</div>
+		<div id="audio" class="col s12">Audio</div>
+ 	</div>
+
+
+
+</div>
+  
+
+    
+
+
+   
+   
         
         
-        
-    </div>
+         
 
     <script src="js/jquery-3.5.1.js"></script>
     <script src="js/materialize.js"></script>
 
     <script>
     M.AutoInit();
+    $('.tabs').tabs();
     </script>
 </body>
 </html>
